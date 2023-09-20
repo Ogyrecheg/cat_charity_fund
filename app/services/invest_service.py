@@ -15,7 +15,7 @@ async def close_obj(
     obj.close_date = dt.utcnow()
 
 
-async def check_not_invested(
+async def get_not_invested(
         session: AsyncSession
 ):
     project = await session.execute(select(CharityProject).where(
@@ -34,7 +34,7 @@ async def investment(
         session: AsyncSession,
         obj: Union[CharityProject, Donation]
 ):
-    project, donation = await check_not_invested(session)
+    project, donation = await get_not_invested(session)
     if not project or not donation:
         await session.commit()
         await session.refresh(obj)

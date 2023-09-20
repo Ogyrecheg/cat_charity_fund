@@ -24,9 +24,9 @@ class CharityProjectUpdate(CharityProjectBase):
 
 
 class CharityProjectCreate(CharityProjectBase):
-    name: str = Field(..., min_length=1, max_length=100)
-    description: str = Field(..., min_length=1)
-    full_amount: int = Field(..., gt=0)
+    name: str = Field(min_length=1, max_length=100)
+    description: str = Field(min_length=1)
+    full_amount: int = Field(gt=0)
 
     @validator('name', 'description')
     def none_and_empty_not_allowed(cls, value: str):

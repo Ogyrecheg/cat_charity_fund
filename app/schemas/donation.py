@@ -10,7 +10,7 @@ class DonationBase(BaseModel):
 
 
 class DonationCreate(DonationBase):
-    full_amount: int = Field(..., gt=0)
+    full_amount: int = Field(gt=0)
 
 
 class DonationResponse(DonationBase):

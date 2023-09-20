@@ -4,18 +4,15 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.validators import (check_charity_project_exists,
-                                check_is_the_project_closed,
-                                check_is_the_project_invested,
-                                check_name_duplicate,
-                                check_update_full_amount_value)
+                                check_is_the_project_closed)
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud.charity_project import charity_project_crud
 from app.schemas.charity_project import (CharityProjectBD,
                                          CharityProjectCreate,
                                          CharityProjectUpdate)
-from app.services.invest_service import investment
-
+from app.services.utils import (create_charity_project, delete_charity_project,
+                                update_charity_project)
 
 router = APIRouter()
 
@@ -38,14 +35,12 @@ async def get_all_charity_projects(
     response_model_exclude_none=True,
     dependencies=[Depends(current_superuser)]
 )
-async def create_charity_project(
+async def create_project(
         charity_project: CharityProjectCreate,
         session: AsyncSession = Depends(get_async_session),
 
 ):
-    await check_name_duplicate(charity_project.name, session)
-    response = await charity_project_crud.create(charity_project, session)
-    await investment(session, response)
+    response = await create_charity_project(charity_project, session)
     return response
 
 
@@ -55,24 +50,18 @@ async def create_charity_project(
     response_model_exclude_none=False,
     dependencies=[Depends(current_superuser)]
 )
-async def update_charity_project(
+async def update_project(
         project_id: int,
         obj_in: CharityProjectUpdate,
         session: AsyncSession = Depends(get_async_session)
 ):
     charity_project = await check_charity_project_exists(project_id, session)
     await check_is_the_project_closed(project_id, session)
-    if obj_in.name:
-        await check_name_duplicate(obj_in.name, session)
-    if obj_in.full_amount:
-        await check_update_full_amount_value(
-            obj_in.full_amount,
-            charity_project.invested_amount
-        )
-    charity_project = await charity_project_crud.update(
+    charity_project = await update_charity_project(
+        project_id,
         charity_project,
         obj_in,
-        session,
+        session
     )
     return charity_project
 
@@ -83,13 +72,13 @@ async def update_charity_project(
     response_model_exclude_none=False,
     dependencies=[Depends(current_superuser)]
 )
-async def delete_charity_project(
+async def delete_project(
         project_id: int,
         session: AsyncSession = Depends(get_async_session)
 ):
     charity_project = await check_charity_project_exists(project_id, session)
-    await check_is_the_project_invested(project_id, session)
-    charity_project = await charity_project_crud.remove(
+    charity_project = await delete_charity_project(
+        project_id,
         charity_project,
         session
     )

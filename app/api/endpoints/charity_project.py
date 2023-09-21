@@ -3,8 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.validators import (check_charity_project_exists,
-                                check_is_the_project_closed)
+from app.api.validators import check_charity_project_exists
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud.charity_project import charity_project_crud
@@ -56,7 +55,6 @@ async def update_project(
         session: AsyncSession = Depends(get_async_session)
 ):
     charity_project = await check_charity_project_exists(project_id, session)
-    await check_is_the_project_closed(project_id, session)
     charity_project = await update_charity_project(
         project_id,
         charity_project,

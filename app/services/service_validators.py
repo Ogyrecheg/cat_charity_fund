@@ -3,11 +3,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.charity_project import charity_project_crud
 from app.services.service_constants import (BAD_REQUEST_CODE,
-                                            UNPROCESSABLE_ENTITY,
+                                            FULL_AMOUNT_ERROR_MSG,
+                                            PROJECT_CLOSED_ERROR_MSG,
                                             PROJECT_DUPLICATE_ERROR_MSG,
                                             PROJECT_INVESTED_ERROR_MSG,
-                                            PROJECT_CLOSED_ERROR_MSG,
-                                            FULL_AMOUNT_ERROR_MSG)
+                                            UNPROCESSABLE_ENTITY)
 
 
 async def check_name_duplicate(

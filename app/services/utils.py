@@ -1,14 +1,14 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.services.service_validators import (check_is_the_project_closed,
-                                             check_is_the_project_invested,
-                                             check_name_duplicate,
-                                             check_update_full_amount_value)
 from app.crud.charity_project import charity_project_crud
 from app.models import CharityProject
 from app.schemas.charity_project import (CharityProjectCreate,
                                          CharityProjectUpdate)
 from app.services.invest_service import investment
+from app.services.service_validators import (check_is_the_project_closed,
+                                             check_is_the_project_invested,
+                                             check_name_duplicate,
+                                             check_update_full_amount_value)
 
 
 async def create_charity_project(

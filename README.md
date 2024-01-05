@@ -38,10 +38,17 @@ python3 -m pip install --upgrade pip
 
 pip install -r requirements.txt
 ```
-4. Создать и заполнить файл **.env** в соответствии с [рекомендациями](#заполнение-конфигурационного-env-файла):
+4. Создать и заполнить файл **.env**:
 
 ```bash
 touch .env
+```
+
+```
+APP_TITLE=Сервис пожертвований котикам
+DESCRIPTION=Секретное описание сервиса пожертвований котикам
+DATABASE_URL=sqlite+aiosqlite:///./fastapi.db
+SECRET=Azazalalka
 ```
 
 5. Выполнить миграции:
@@ -58,3 +65,11 @@ uvicorn app.main:app
 Документация к API досупна по адресам:
 - Swagger: http://127.0.0.1:8000/docs
 - Redoc: http://127.0.0.1:8000/redoc
+
+**Технологии:**
+- Python
+- FastAPI
+- SQLAlchemy
+
+### Автор проекта:
+[Шевченко Александр](https://github.com/Ogyrecheg)
